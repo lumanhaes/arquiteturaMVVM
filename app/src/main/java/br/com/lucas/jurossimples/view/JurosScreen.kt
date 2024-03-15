@@ -37,9 +37,11 @@ fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
 
     //var capital by remember { mutableStateOf("") }
     val capital by jurosScreenViewModel.capital.observeAsState(initial = "")
+    //var taxa by remember { mutableStateOf("") }
+    val taxa by jurosScreenViewModel.taxa.observeAsState(initial = "")
+    //var tempo by remember { mutableStateOf("") }
+    val tempo by jurosScreenViewModel.tempo.observeAsState(initial = "")
 
-    var taxa by remember { mutableStateOf("") }
-    var tempo by remember { mutableStateOf("") }
     var juros by remember { mutableDoubleStateOf(0.0) }
     var montante by remember { mutableDoubleStateOf(0.0) }
 
@@ -76,37 +78,21 @@ fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
                         keyboardType = KeyboardType.Number,
                         onValueChange = { jurosScreenViewModel.onCapitalChanged(it)}
                     )
-                    OutlinedTextField(
+                    CaixaDeEntrada(
                         value = taxa,
-                        onValueChange = { taxa = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        placeholder = {
-                            Text(text = "Qual a taxa de juros mensal?")
-                        },
-                        label = {
-                            Text(text = "Taxa de juros mensal")
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal
-                        )
+                        label = "Taxa de juros mensal",
+                        modifier = Modifier.fillMaxWidth(),
+                        placeHolder = "Qual a taxa de juros mensal?",
+                        keyboardType = KeyboardType.Number,
+                        onValueChange = { jurosScreenViewModel.onTaxaChanged(it) }
                     )
-                    OutlinedTextField(
+                    CaixaDeEntrada(
                         value = tempo,
-                        onValueChange = { tempo = it },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp),
-                        placeholder = {
-                            Text(text = "Qual o tempo em meses?")
-                        },
-                        label = {
-                            Text(text = "Período em meses")
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Decimal
-                        )
+                        label = "Periodo",
+                        modifier = Modifier.fillMaxWidth(),
+                        placeHolder = "Perido em meses",
+                        keyboardType = KeyboardType.Number,
+                        onValueChange = { jurosScreenViewModel.onTempoChanged(it) }
                     )
                     Button(
                         onClick = {
