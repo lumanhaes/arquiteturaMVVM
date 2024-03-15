@@ -7,19 +7,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,9 +22,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import br.com.lucas.jurossimples.components.CaixaDeEntrada
 import br.com.lucas.jurossimples.model.calcularJuros
 import br.com.lucas.jurossimples.model.calcularMontante
-import br.com.lucas.jurossimples.components.CaixaDeEntrada
 
 @Composable
 fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
@@ -41,9 +35,11 @@ fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
     val taxa by jurosScreenViewModel.taxa.observeAsState(initial = "")
     //var tempo by remember { mutableStateOf("") }
     val tempo by jurosScreenViewModel.tempo.observeAsState(initial = "")
+    //var juros by remember { mutableDoubleStateOf(0.0) }
+    val juros by jurosScreenViewModel.juros.observeAsState(initial = 0.0)
+    //var montante by remember { mutableDoubleStateOf(0.0) }
+    val montante by jurosScreenViewModel.montante.observeAsState(initial = 0.0)
 
-    var juros by remember { mutableDoubleStateOf(0.0) }
-    var montante by remember { mutableDoubleStateOf(0.0) }
 
     Box(
         modifier = Modifier.padding(16.dp),
@@ -96,15 +92,8 @@ fun JurosScreen(jurosScreenViewModel: JurosScreenViewModel) {
                     )
                     Button(
                         onClick = {
-                            juros = calcularJuros(
-                                capital = capital.toDouble(),
-                                taxa = taxa.toDouble(),
-                                tempo = tempo.toDouble()
-                            )
-                            montante = calcularMontante(
-                                capital = capital.toDouble(),
-                                juros = juros
-                            )
+                            jurosScreenViewModel.calcularJurosViewModel()
+                            jurosScreenViewModel.calcularMontanteViewModel()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
